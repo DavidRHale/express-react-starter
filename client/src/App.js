@@ -11,12 +11,18 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './actions/authActions';
+import { setCurrentUser, logoutUser } from './actions/authActions';
 
 if (localStorage.jwt) {
   setAuthToken(localStorage.jwt);
   const user = jwt_decode(localStorage.jwt);
   store.dispatch(setCurrentUser(user));
+
+  const currentTime = Date.now() / 1000;
+  if (user.exp < currentTime) {
+    store.dispatch(logoutUser());
+    window.location.href = '/login';
+  }
 }
 
 class App extends Component {
