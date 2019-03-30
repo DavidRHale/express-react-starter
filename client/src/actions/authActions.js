@@ -33,3 +33,10 @@ export const setCurrentUser = user => ({
   payload: user
 });
 
+// Log user out
+export const logoutUser = () => dispatch => {
+  localStorage.removeItem('jwt');
+  setAuthToken(false);
+  dispatch(setCurrentUser(null));
+}
+
